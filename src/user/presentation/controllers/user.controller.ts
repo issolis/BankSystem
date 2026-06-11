@@ -18,10 +18,13 @@ export class UserController {
             console.log("hello")
 
             res.status(200).json({
-                id: user.getId().getValue(),
-                username: user.getUsername().getUsername(),
-                clearance_level: user.getSecurityLevel().getClearance(),
-                integrity_level: user.getSecurityLevel().getIntegrity(),
+                success: true,
+                data: {
+                    id: user.getId().getValue(),
+                    username: user.getUsername().getUsername(),
+                    clearance_level: user.getSecurityLevel().getClearance(),
+                    integrity_level: user.getSecurityLevel().getIntegrity()
+                }
             });
 
         } catch (error) {
@@ -30,10 +33,10 @@ export class UserController {
                     success: false,
                     error: error.message
                 });
-            } else {
+            } if (error instanceof Error)  {
                 res.status(500).json({
                     success: false,
-                    error: "Internal server error"
+                    error: error.message
                 });
             }
         }

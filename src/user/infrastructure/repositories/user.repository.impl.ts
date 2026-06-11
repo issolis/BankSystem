@@ -15,13 +15,14 @@ export class UserRepositoryImpl implements UserRepository {
 
     async findById(id: UserId): Promise<User | null> {
         try {
+            console.log("id")
             const result = await this.db.query(
                 `SELECT uuid, username, password_hash, clearance_level, integrity_level
              FROM users
              WHERE uuid = $1`,
                 [id.getValue()]
             );
-
+            console.log(result.rows)
             if (!result.rows[0]) return null;
 
             return UserMapper.toDomain(result.rows[0] as UserModel);
