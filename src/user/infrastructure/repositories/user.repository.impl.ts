@@ -44,12 +44,27 @@ export class UserRepositoryImpl implements UserRepository {
             throw new Error(`Failed to find user by id: ${error instanceof Error ? error.message : error}`);
         }
     }
+    async create(user: User): Promise<User> {
+        try {
+            const userDB = UserMapper.toPersistence(user);
+            const result = await this.db.query(`
+            INSERT INTO users
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *
+            `,
+                [userDB.uuid, userDB.username, userDB.password_hash,
+                userDB.clearance_level, userDB.integrity_level]
+            );
 
+            return UserMapper.toDomain(result.rows[0] as UserModel);
+
+        } catch (error) {
+            throw new Error(`Internal Error: ${error instanceof Error ? error.message : error}`);
+        }
+    }
     findByUsername(username: Username): Promise<User | null> {
         throw new Error("Method not implemented.");
     }
-    save(user: User): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
 
 }

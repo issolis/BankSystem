@@ -43,7 +43,7 @@ export class UserMapper {
         return value as ClearanceLevel;
     }
 
-    private static toIntegrityLevel(value: number): IntegrityLevel {
+    static toIntegrityLevel(value: number): IntegrityLevel {
         switch (value) {
             case 1:
                 return IntegrityLevel.LEVEL_1;

@@ -6,5 +6,5 @@ export interface UserRepository{
     findById(id: UserId): Promise<User | null>; 
     findByUsername(username: Username): Promise<User | null>; 
     findAllUsers(): Promise<User[] | []>; 
-    save(user: User): Promise<void>; 
+    create(user: User): Promise<User>; 
 }
