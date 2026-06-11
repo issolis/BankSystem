@@ -1,0 +1,16 @@
+import { Router } from "express";
+import { UserController } from "./user.controller.js";
+import { UserValidator } from "./user.validator.js";
+import { FindUserByIdUseCase } from "../application/use-cases/find-user-by-id.js";
+import { FindAllUsersUseCase } from "../application/use-cases/find-all-users.js";
+import { UserRepositoryImpl } from "../infrastructure/repositories/user.repository.impl.js";
+
+const userRepository = new UserRepositoryImpl();
+const findUserByIdUseCase = new FindUserByIdUseCase(userRepository);
+const findAllUsersUseCase = new FindAllUsersUseCase(userRepository);
+const userController = new UserController(findUserByIdUseCase, findAllUsersUseCase);
+
+export const userRouter = Router();
+
+userRouter.get("/", userController.findAll);
+userRouter.get("/:id", UserValidator.validateFindById, userController.findById);

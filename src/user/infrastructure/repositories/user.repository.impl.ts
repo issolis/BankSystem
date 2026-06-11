@@ -13,16 +13,29 @@ export class UserRepositoryImpl implements UserRepository {
         private readonly db: Pool = pool
     ) { }
 
+
+    async findAllUsers(): Promise<User[] | []> {
+        try {
+            const result = await this.db.query(
+                `SELECT uuid, username, password_hash, clearance_level, integrity_level
+             FROM users`
+            );
+
+            return result.rows.map(row => UserMapper.toDomain(row as UserModel));
+
+        } catch (error) {
+            throw new Error(`Failed to find users: ${error instanceof Error ? error.message : error}`);
+        }
+    }
+
     async findById(id: UserId): Promise<User | null> {
         try {
-            console.log("id")
             const result = await this.db.query(
                 `SELECT uuid, username, password_hash, clearance_level, integrity_level
              FROM users
              WHERE uuid = $1`,
                 [id.getValue()]
             );
-            console.log(result.rows)
             if (!result.rows[0]) return null;
 
             return UserMapper.toDomain(result.rows[0] as UserModel);

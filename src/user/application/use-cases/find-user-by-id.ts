@@ -10,9 +10,7 @@ export class FindUserByIdUseCase {
 
     async execute(id: string): Promise<User> {
         const userId = UserId.fromString(id);
-
-        console.log(userId)
-
+        
         const user = await this.userRepository.findById(userId);
 
         console.log(user)
