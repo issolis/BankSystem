@@ -7,31 +7,35 @@ import { Username } from "../../domain/value-objects/username.vo.js";
 import type { UserModel } from "../models/user.model.js";
 import { UserMapper } from "../mappers/user.mapper.js";
 
-
-export class UserRepositoryImpl implements UserRepository{
+export class UserRepositoryImpl implements UserRepository {
 
     constructor(
         private readonly db: Pool = pool
-    ){}
+    ) { }
 
     async findById(id: UserId): Promise<User | null> {
-        const id_value = id.getValue(); 
+        try {
+            const result = await this.db.query(
+                `SELECT uuid, username, password_hash, clearance_level, integrity_level
+             FROM users
+             WHERE uuid = $1`,
+                [id.getValue()]
+            );
 
-        const result = await this.db.query(`
-            SELECT * 
-            FROM users
-            WHERE users.id = $1
-            `, 
-            [id_value]
-        ); 
-        
-        throw new Error("Method not implemented.");
+            if (!result.rows[0]) return null;
+
+            return UserMapper.toDomain(result.rows[0] as UserModel);
+
+        } catch (error) {
+            throw new Error(`Failed to find user by id: ${error instanceof Error ? error.message : error}`);
+        }
     }
+
     findByUsername(username: Username): Promise<User | null> {
         throw new Error("Method not implemented.");
     }
     save(user: User): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    
+
 }

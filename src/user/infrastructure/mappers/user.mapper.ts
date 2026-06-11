@@ -56,7 +56,7 @@ export class UserMapper {
         }
     }
 
-    private static toIntegrityLevelNumber(value: IntegrityLevel): number {
+    static toIntegrityLevelNumber(value: IntegrityLevel): number {
         switch (value) {
             case IntegrityLevel.LEVEL_1:
                 return 1;
