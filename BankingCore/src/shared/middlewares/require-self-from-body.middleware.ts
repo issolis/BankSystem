@@ -5,6 +5,12 @@ const bankAccountRepository = new BankAccountRepositoryImpl();
 
 export async function requireSelfFromBody(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+
+        if (req.user?.role === "ADMIN") {
+            next();
+            return;
+        }
+        
         const remitterAccountId = new AccountId(req.body.remitter_account_uuid);
         const bankAccount = await bankAccountRepository.findById(remitterAccountId);
 

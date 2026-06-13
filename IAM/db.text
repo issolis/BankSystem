@@ -3,5 +3,6 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(200) NOT NULL,
     clearance_level VARCHAR(20) NOT NULL CHECK (clearance_level IN ('BRONZE', 'SILVER', 'PLATINUM')),
-    integrity_level INT NOT NULL CHECK (integrity_level IN (1, 2, 3))
+    integrity_level INT NOT NULL CHECK (integrity_level IN (1, 2, 3)),
+    role VARCHAR(20) NOT NULL DEFAULT 'USER' CHECK (role IN ('USER', 'ADMIN'))
 );

@@ -1,0 +1,17 @@
+-- Banking Core
+
+CREATE TABLE bank_accounts (
+    uuid VARCHAR(50) PRIMARY KEY,
+    owner_uuid VARCHAR(50) NOT NULL,
+    balance DECIMAL(19, 4) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE transactions (
+    uuid VARCHAR(50) PRIMARY KEY,
+    account_remitter_uuid VARCHAR(50) NOT NULL,
+    account_receiver_uuid VARCHAR(50) NOT NULL,
+    amount DECIMAL(19, 4) NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('COMPLETED', 'REJECTED')),
+    rejection_reason VARCHAR(255),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
