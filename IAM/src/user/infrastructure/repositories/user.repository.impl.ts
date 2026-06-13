@@ -31,7 +31,7 @@ export class UserRepositoryImpl implements UserRepository {
     async findById(id: UserId): Promise<User | null> {
         try {
             const result = await this.db.query(
-                `SELECT uuid, username, password_hash, clearance_level, integrity_level
+                `SELECT uuid, username, password_hash, clearance_level, integrity_level, role
              FROM users
              WHERE uuid = $1`,
                 [id.getValue()]
@@ -66,7 +66,7 @@ export class UserRepositoryImpl implements UserRepository {
         try {
 
             const result = await this.db.query(
-                `SELECT uuid, username, password_hash, clearance_level, integrity_level
+                `SELECT uuid, username, password_hash, clearance_level, integrity_level, role
              FROM users
              WHERE username = $1`,
                 [username.getUsername()]

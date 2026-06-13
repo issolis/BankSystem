@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import fs from "fs";
 import path from "path";
 import { User } from "../../../user/domain/entities/user.entity.js";
+import { UserMapper } from "../../../user/infrastructure/mappers/user.mapper.js";
 
 const privateKey = fs.readFileSync(path.resolve("keys/private.pem"), "utf8");
 
@@ -12,9 +13,11 @@ export class AuthService {
             sub: user.getId().getValue(),
             username: user.getUsername().getUsername(),
             clearance_level: user.getSecurityLevel().getClearance(),
-            integrity_level: user.getSecurityLevel().getIntegrity()
+            integrity_level: UserMapper.toIntegrityLevelNumber(user.getSecurityLevel().getIntegrity()),
+            role: user.getRole()
         };
 
+        console.log(payload); 
         return jwt.sign(payload, privateKey, {
             algorithm: "RS256",
             expiresIn: "1h"

@@ -5,6 +5,7 @@ import { PasswordHash } from "../../domain/value-objects/password-hash.vo.js";
 import { SecurityLevel } from "../../domain/value-objects/security-level.vo.js";
 import { ClearanceLevel } from "../../domain/value-objects/clereance-level.vo.js";
 import { IntegrityLevel } from "../../domain/value-objects/integrity-level.vo.js";
+import { UserRole } from "../../domain/value-objects/user-role.vo.js";
 
 import type { UserModel } from "../models/user.model.js";
 
@@ -18,8 +19,9 @@ export class UserMapper {
             new PasswordHash(model.password_hash),
             new SecurityLevel(
                 UserMapper.toClearanceLevel(model.clearance_level),
-                UserMapper.toIntegrityLevel(model.integrity_level)
-            )
+                UserMapper.toIntegrityLevel(model.integrity_level), 
+            ), 
+            model.role as UserRole
         );
     }
 
@@ -31,7 +33,8 @@ export class UserMapper {
             clearance_level: user.getSecurityLevel().getClearance(),
             integrity_level: UserMapper.toIntegrityLevelNumber(
                 user.getSecurityLevel().getIntegrity()
-            )
+            ), 
+            role: user.getRole()
         };
     }
 

@@ -4,4 +4,5 @@ export interface UserModel {
     password_hash: string;
     clearance_level: string;
     integrity_level: number;
+    role: string;
 }
