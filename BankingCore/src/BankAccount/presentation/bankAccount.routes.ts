@@ -6,6 +6,8 @@ import { FindBankAccountByIdUseCase } from "../application/use-cases/find-bank-a
 import { FindBankAccountByOwnerIdUseCase } from "../application/use-cases/find-bank-account-by-ownerid.js";
 import { FindAllBankAccountsUseCase } from "../application/use-cases/find-all-bank-accounts.js";
 import { CreateBankAccountUseCase } from "../application/use-cases/create-bank-account.js";
+import { authenticate } from "../../shared/middlewares/authenticate.middleware.js";
+
 
 const bankAccountRepository = new BankAccountRepositoryImpl();
 const findBankAccountByIdUseCase = new FindBankAccountByIdUseCase(bankAccountRepository);
@@ -21,6 +23,8 @@ const bankAccountController = new BankAccountController(
 );
 
 export const bankAccountRouter = Router();
+
+bankAccountRouter.use(authenticate);
 
 bankAccountRouter.get("/", bankAccountController.findAll);
 bankAccountRouter.get("/owner/:ownerId", BankAccountValidator.validateFindByOwnerId, bankAccountController.findByOwnerId);
