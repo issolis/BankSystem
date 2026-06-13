@@ -5,6 +5,7 @@ declare global {
                 sub: string;
                 clearance_level: string;
                 integrity_level: number;
+                role: string;
             };
         }
     }

@@ -8,6 +8,8 @@ import { FindTransactionByIdUseCase } from "../application/use-cases/find-transa
 import { FindAllTransactionsUseCase } from "../application/use-cases/find-all-transactions.js";
 import { authenticate } from "../../shared/middlewares/authenticate.middleware.js";
 import { requireSelfFromBody } from "../../shared/middlewares/require-self-from-body.middleware.js";
+import { requireAdmin } from "../../shared/middlewares/require-admin.middleware.js";
+
 
 const transactionRepository = new TransactionRepositoryImpl();
 const bankAccountRepository = new BankAccountRepositoryImpl();
@@ -26,7 +28,7 @@ export const transactionRouter = Router();
 
 transactionRouter.use(authenticate);
 
-transactionRouter.get("/", transactionController.findAll);
-transactionRouter.get("/:id", TransactionValidator.validateFindById, transactionController.findById);
+transactionRouter.get("/", requireAdmin, transactionController.findAll);
+transactionRouter.get("/:id", requireAdmin, TransactionValidator.validateFindById, transactionController.findById);
 
 transactionRouter.post("/", authenticate, requireSelfFromBody, TransactionValidator.validateCreate, transactionController.create);

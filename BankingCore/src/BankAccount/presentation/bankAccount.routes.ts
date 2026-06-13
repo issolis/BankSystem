@@ -7,6 +7,7 @@ import { FindBankAccountByOwnerIdUseCase } from "../application/use-cases/find-b
 import { FindAllBankAccountsUseCase } from "../application/use-cases/find-all-bank-accounts.js";
 import { CreateBankAccountUseCase } from "../application/use-cases/create-bank-account.js";
 import { authenticate } from "../../shared/middlewares/authenticate.middleware.js";
+import { requireAdmin } from "../../shared/middlewares/require-admin.middleware.js";
 
 
 const bankAccountRepository = new BankAccountRepositoryImpl();
@@ -24,7 +25,7 @@ const bankAccountController = new BankAccountController(
 
 export const bankAccountRouter = Router();
 
-bankAccountRouter.use(authenticate);
+bankAccountRouter.use(authenticate, requireAdmin);
 
 bankAccountRouter.get("/", bankAccountController.findAll);
 bankAccountRouter.get("/owner/:ownerId", BankAccountValidator.validateFindByOwnerId, bankAccountController.findByOwnerId);

@@ -20,7 +20,8 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
         (req as any).user = {
             sub: payload.sub,
             clearance_level: payload.clearance_level,
-            integrity_level: payload.integrity_level
+            integrity_level: payload.integrity_level,
+            role: payload.role
         };
 
         next();
