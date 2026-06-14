@@ -8,6 +8,8 @@ RUN npm install
 COPY . .
 
 RUN npm run build
+RUN ls -la dist/
+
 
 EXPOSE 3000
 

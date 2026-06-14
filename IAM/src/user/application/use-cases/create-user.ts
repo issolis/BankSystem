@@ -7,6 +7,7 @@ import { PasswordHash } from "../../domain/value-objects/password-hash.vo.js";
 import { SecurityLevel } from "../../domain/value-objects/security-level.vo.js";
 import { ClearanceLevel } from "../../domain/value-objects/clereance-level.vo.js";
 import { IntegrityLevel } from "../../domain/value-objects/integrity-level.vo.js";
+import { UserRole } from "../../domain/value-objects/user-role.vo.js";
 
 export class CreateUserUseCase {
     constructor(
@@ -26,7 +27,7 @@ export class CreateUserUseCase {
         const passwordHashVO = new PasswordHash(hash);
         const securityLevel = new SecurityLevel(clearanceLevel, integrityLevel);
 
-        const user = User.create(usernameVO, passwordHashVO, securityLevel);
+        const user = User.create(usernameVO, passwordHashVO, securityLevel, UserRole.USER);
 
         return await this.userRepository.create(user);
     }
