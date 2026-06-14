@@ -17,7 +17,8 @@ export class TransactionProcessor {
         remitterAccountUuid: string,
         receiverAccountUuid: string,
         amount: number,
-        requesterIntegrityLevel: number
+        requesterIntegrityLevel: number,
+        token: string
     ): Promise<Transaction> {
 
         const remitterAccountId = new AccountId(remitterAccountUuid);
@@ -34,7 +35,12 @@ export class TransactionProcessor {
 
 
         const iamResponse = await fetch(
-            `${process.env.IAM_URL}/users/${receiverAccount.getOwnerId().getValue()}`
+            `${process.env.IAM_URL}/users/${receiverAccount.getOwnerId().getValue()}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
         if (!iamResponse.ok) {
             throw new AppError("Could not retrieve receiver owner data from IAM", 502);

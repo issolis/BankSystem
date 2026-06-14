@@ -21,13 +21,15 @@ export class CreateTransactionUseCase {
         remitterAccountUuid: string,
         receiverAccountUuid: string,
         amount: number,
-        requesterIntegrityLevel: number
+        requesterIntegrityLevel: number,
+        token: string
     ): Promise<Transaction> {
         return await this.transactionProcessor.process(
             remitterAccountUuid,
             receiverAccountUuid,
             amount,
-            requesterIntegrityLevel
+            requesterIntegrityLevel,
+            token
         );
     }
 }

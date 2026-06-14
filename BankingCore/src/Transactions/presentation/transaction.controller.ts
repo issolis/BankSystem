@@ -16,11 +16,14 @@ export class TransactionController {
 
     async create(req: Request, res: Response): Promise<void> {
         try {
+            const token = req.headers.authorization!.split(" ")[1] as string;
+
             const transaction = await this.createTransactionUseCase.execute(
                 req.body.remitter_account_uuid,
                 req.body.receiver_account_uuid,
                 req.body.amount,
-                req.user!.integrity_level
+                req.user!.integrity_level,
+                token
             );
 
             const status = transaction.getStatus();
