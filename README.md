@@ -72,13 +72,7 @@ Stop everything:
 make down
 ```
 
-Once deployed, open a separate terminal and run:
-
-```bash
-minikube tunnel
-```
-
-Then access all services through the API Gateway at `http://localhost:3003`.
+The `deploy` and `up` commands automatically start a port-forward on `http://localhost:3003` for the API Gateway. Keep that terminal open while using the API.
 
 ## API Routes
 

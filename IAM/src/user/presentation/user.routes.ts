@@ -16,8 +16,11 @@ const userController = new UserController(findUserByIdUseCase, findAllUsersUseCa
 
 export const userRouter = Router();
 
-userRouter.use(authenticate, requireAdmin);
+userRouter.use(authenticate);
+
+userRouter.get("/:id", UserValidator.validateFindById, userController.findById);
+
+userRouter.use(requireAdmin);
 
 userRouter.get("/", userController.findAll);
-userRouter.get("/:id", UserValidator.validateFindById, userController.findById);
 userRouter.post("/",UserValidator.validateCreate, userController.create);
