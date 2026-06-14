@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-core
+  template:
+    metadata:
+      labels:
+        app: banking-core
+    spec:
+      containers:
+        - name: banking-core
+          image: banking-core:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: banking-config
+          env:
+            - name: DB_PASSWORD
+              value: "74zk0Sj4QlDkBbnhA8bJrM3L2zp5K5CA"

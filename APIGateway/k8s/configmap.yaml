@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  PORT: "3003"
+  IAM_URL: "http://iam:3000"
+  BANKING_URL: "http://banking-core:3001"
+  VIP_URL: "http://assets:3002"
