@@ -4,8 +4,16 @@ dotenv.config();
 import express from "express";
 import type { Request, Response } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import * as swaggerUi from "swagger-ui-express";
+import { openApiSpec } from "./openapi.js";
 
 const app = express();
+
+app.get("/openapi.json", (_req: Request, res: Response) => {
+    res.json(openApiSpec);
+});
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 app.use("/iam", createProxyMiddleware({
     target: process.env.IAM_URL as string,
